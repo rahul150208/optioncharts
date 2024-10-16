@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <h1>Click the Button to Redirect</h1>
+    <form action="/" method="POST">
+      <div class="mb-3">
+        <label for="access_code" class="form-label">number code</label>
+        <input type="number" class="form-control" id="access_code" name="access_code" placeholder="number">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    
+    
+      
+    </form>
+
+
+    <form action="{{ url_for('your_redirect_route') }}" method="GET"  target="_blank">
+      <button  type="submit">Go to icicidirect_api_login</button>
+      
+      <a href="/charts" type="button" class="btn btn-dark">Dark</a>
+    </form>
+  </body>
+</html>

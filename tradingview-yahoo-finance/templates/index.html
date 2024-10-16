@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradingView Chart with Yahoo Finance Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .watchlist {
+            width: 200px;
+            border-left: 1px solid #ccc;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .watchlist-item {
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .watchlist-item:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body class="bg-white text-black">
+    <div class="flex h-screen">
+        <div class="flex-grow flex flex-col">
+            <header class="p-4 bg-gray-800 text-white">
+                <div class="flex justify-between items-center mt-4">
+                    <div id="controls" class="flex space-x-4 items-center">
+                        <div class="flex items-center space-x-2">
+                            <label for="symbol" class="text-white">Symbol</label>
+                            <input type="text" id="symbol" class="p-2 rounded border w-30 bg-gray-900 text-white" placeholder="Symbol" value="NIFTY">
+                        </div>
+
+                        <div class="flex items-center space-x-2">
+                            <label for="timeframe" class="text-white">Interval</label>
+                            <select id="timeframe" class="p-2 rounded border w-30 bg-gray-900 text-white">
+                                <option value="1minute">1minute</option>
+                                <option value="5minute">5minute</option>
+                                <option value="30minute">30minute</option>
+                                <option value="1day">1day</option>
+
+                            </select>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <label for="fromdate" class="text-white">Fromdate</label>
+                            <input type="date" id="fromdate" class="p-2 rounded border w-30 bg-gray-900 text-white" placeholder="fromdate" >
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <label for="todate" class="text-white">Todate</label>
+                            <input type="date" id="todate" class="p-2 rounded border w-30 bg-gray-900 text-white" placeholder="todate" >
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <label for="expiry" class="text-white">Expiry</label>
+                            <input type="date" id="expiry" class="p-2 rounded border w-30 bg-gray-900 text-white" placeholder="expiry" >
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <label for="strike" class="text-white">Strike</label>
+                            <input type="number" id="strike" class="p-2 rounded border w-30 bg-gray-900 text-white" placeholder="25000" >
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <label for="option" class="text-white">Option</label>
+                            <input type="text" id="option" class="p-2 rounded border w-30 bg-gray-900 text-white" placeholder="call/put" >
+                        </div>
+                        <button id="fetchData" class="p-2 bg-blue-500 text-white rounded">Fetch Data</button>
+
+                    </div>
+                    <button id="themeToggle" class="p-2 bg-gray-700 text-white rounded">Toggle Theme</button>
+                </div>
+            </header>
+            <main class="flex-grow">
+                <div id="chart" class="w-full h-full"></div>
+                
+            </main>
+        </div>
+
+    </div>
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <script src="static/main.js"></script>
+</body>
+</html>
