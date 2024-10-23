@@ -16,6 +16,7 @@ def option_data(from_date,to_date,expiry_date,strike_price,option,timeframe,stoc
     """from_date=dt.datetime(2024,6,3).isoformat(),to_date=dt.datetime(2024,6,6).isoformat(),expiry_date=dt.datetime(2024,6,5).isoformat(),strike_price=47500"""
     print(from_date,to_date,expiry_date,strike_price,option,timeframe,stock_code,'infunction')
     print('breez1',breeze)
+    
     print(type(from_date),type(to_date),type(expiry_date),type(strike_price),type(option),type(timeframe),type(stock_code))
     data=breeze.get_historical_data_v2(interval=timeframe,
                                 from_date= from_date.isoformat(),
@@ -28,6 +29,7 @@ def option_data(from_date,to_date,expiry_date,strike_price,option,timeframe,stoc
                                 strike_price=strike_price)
     print(type(strike_price),'typesssss')
     data=pd.DataFrame(data['Success'])
+    print(data)
     data=data.rename(columns={'datetime':'timestamp'})
 #     data=add_datetime(data)
     
@@ -51,6 +53,7 @@ def get_authenticate(api_session):
     breeze.generate_session(api_secret=SECRET_KEy,
                         session_token=api_session['code'])
     print('breez',breeze)
+    print(breeze.get_customer_details(api_session=api_session['code']))
     
 def fetch_yahoo_data(from_date,to_date,expiry_date,strike_price,option,timeframe,script_code, ema_period=20, rsi_period=14,interval=5):
     # end_date = datetime.now()

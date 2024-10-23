@@ -52,7 +52,7 @@ function fetchData(from_date,to_date,expiry_date,strike_price,option,timeframe,s
 // Fetch NVDA data on page load with default timeframe (daily), EMA period (20) and RSI period (14)
 window.addEventListener('load', () => {
     // print('loading')
-    fetchData('2024-8-2','2024-8-3','2024-8-3','25000',option='put',timeframe="5minute",stock_code="NIFTY");
+    fetchData('2024-8-2','2024-8-9','2024-8-8','25000',option='put',timeframe="5minute",stock_code="NIFTY");
     // print('fetchaction')
     // loadWatchlist();
 });
