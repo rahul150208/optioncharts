@@ -55,7 +55,7 @@ def index():
 @app.route('/api/data/<from_date>/<to_date>/<expiry_date>/<strike_price>/<option>/<timeframe>/<script_code>')
 def get_data(from_date,to_date,expiry_date,strike_price,option,timeframe,script_code):
     try:
-        print(from_date,to_date,expiry_date,strike_price,option,timeframe,script_code,'in flaskapp')
+        # print(from_date,to_date,expiry_date,strike_price,option,timeframe,script_code,'in flaskapp')
         from_date = datetime.strptime(from_date, '%Y-%m-%d')
         to_date = datetime.strptime(to_date, '%Y-%m-%d')
         date = datetime.strptime(expiry_date, '%Y-%m-%d')
@@ -63,13 +63,14 @@ def get_data(from_date,to_date,expiry_date,strike_price,option,timeframe,script_
         # expiry_date = expiryofmonth(date.year,date.month,date.day)
         strike_price = int(strike_price)
 
-        print('checkdatees',date,expiry_date)
+        # print('checkdatees',date,expiry_date)
     except ValueError:
         return jsonify({"error": "Invalid date format. Use YYYY-MM-DD."}), 400
     
 
-    candlestick_data= fetch_yahoo_data(from_date,to_date,expiry_date,strike_price,option,timeframe,script_code)
-    return jsonify({'candlestick': candlestick_data})
+    candlestick_data,vol_data= fetch_yahoo_data(from_date,to_date,expiry_date,strike_price,option,timeframe,script_code)
+    # print(jsonify({'candlestick': candlestick_data,'volume':vol_data}))
+    return jsonify({'candlestick': candlestick_data,'volume':vol_data})
 
 @app.route('/api/symbols')
 def get_symbols():

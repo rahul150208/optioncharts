@@ -14,10 +14,10 @@ breeze = BreezeConnect(api_key=API_KEY)
 
 def option_data(from_date,to_date,expiry_date,strike_price,option,timeframe,stock_code):
     """from_date=dt.datetime(2024,6,3).isoformat(),to_date=dt.datetime(2024,6,6).isoformat(),expiry_date=dt.datetime(2024,6,5).isoformat(),strike_price=47500"""
-    print(from_date,to_date,expiry_date,strike_price,option,timeframe,stock_code,'infunction')
-    print('breez1',breeze)
+    # print(from_date,to_date,expiry_date,strike_price,option,timeframe,stock_code,'infunction')
+    # print('breez1',breeze)
     
-    print(type(from_date),type(to_date),type(expiry_date),type(strike_price),type(option),type(timeframe),type(stock_code))
+    # print(type(from_date),type(to_date),type(expiry_date),type(strike_price),type(option),type(timeframe),type(stock_code))
     data=breeze.get_historical_data_v2(interval=timeframe,
                                 from_date= from_date.isoformat(),
                                 to_date= to_date.isoformat() ,
@@ -27,9 +27,9 @@ def option_data(from_date,to_date,expiry_date,strike_price,option,timeframe,stoc
                                 expiry_date=expiry_date.isoformat(),
                                 right=option,
                                 strike_price=strike_price)
-    print(type(strike_price),'typesssss')
+    # print(type(strike_price),'typesssss')
     data=pd.DataFrame(data['Success'])
-    print(data)
+    # print(data.head())
     data=data.rename(columns={'datetime':'timestamp'})
 #     data=add_datetime(data)
     
@@ -39,7 +39,7 @@ def option_data(from_date,to_date,expiry_date,strike_price,option,timeframe,stoc
 
     
     data=data.rename(columns={'timestamp':'timestamp','high':'High','close':'Close','low':'Low','open':'Open','open_interest':'oi','strike_price':'STK','volume':'vol','vwap':'vwap'})
-    print(data)
+    # print(data)
     # if(option=='call'):
     #     data=data.rename(columns={'timestamp':'ce_timestamp','high':'ce_high','close':'ce_close','low':'ce_low','open':'ce_open','open_interest':'ce_oi','strike_price':'ce_STK','volume':'ce_vol','vwap':'ce_vwap'})
     # if(option=='put'):
@@ -49,11 +49,11 @@ def option_data(from_date,to_date,expiry_date,strike_price,option,timeframe,stoc
 
 def get_authenticate(api_session):
     # Generate Session
-    print(api_session,type(api_session))
+    # print(api_session,type(api_session))
     breeze.generate_session(api_secret=SECRET_KEy,
                         session_token=api_session['code'])
-    print('breez',breeze)
-    print(breeze.get_customer_details(api_session=api_session['code']))
+    # print('breez',breeze)
+    # print(breeze.get_customer_details(api_session=api_session['code']))
     
 def fetch_yahoo_data(from_date,to_date,expiry_date,strike_price,option,timeframe,script_code, ema_period=20, rsi_period=14,interval=5):
     # end_date = datetime.now()
@@ -71,10 +71,11 @@ def fetch_yahoo_data(from_date,to_date,expiry_date,strike_price,option,timeframe
     # data = yf.download(ticker, start=start_date, end=end_date, interval=interval)
     
     data =option_data(from_date,to_date,expiry_date,strike_price,option,timeframe,script_code)
-    print('mydata',data)
-    data['EMA'] = ta.ema(data['Close'], length=ema_period)
-    data['RSI'] = ta.rsi(data['Close'], length=rsi_period)
-
+    # print('mydata',data)
+    # data['EMA'] = ta.ema(data['Close'], length=ema_period)
+    # data['RSI'] = ta.rsi(data['Close'], length=rsi_period)
+    data.loc[data['Close']>data['Open'],'color'] = '#26a69a'
+    data.loc[data['Close']<data['Open'],'color'] = '#ef5350'
     # candlestick_data = [
     #     {
     #         'time': int(row.Index.timestamp()),
@@ -95,23 +96,32 @@ def fetch_yahoo_data(from_date,to_date,expiry_date,strike_price,option,timeframe
         }
         for row in data.itertuples()
     ]
-    ema_data = [
+    vol_data = [
         {
             'time': time.mktime(row.timestamp.timetuple()),
-            'value': row.EMA
-        }
-        for row in data.itertuples() if not pd.isna(row.EMA)
-    ]
-
-    rsi_data = [
-        {
-            'time': time.mktime(row.timestamp.timetuple()),
-            'value': row.RSI if not pd.isna(row.RSI) else 0  # Convert NaN to zero
+            'value': row.vol,
+            'color':row.color,
         }
         for row in data.itertuples()
     ]
+
+    # ema_data = [
+    #     {
+    #         'time': time.mktime(row.timestamp.timetuple()),
+    #         'value': row.EMA
+    #     }
+    #     for row in data.itertuples() if not pd.isna(row.EMA)
+    # ]
+
+    # rsi_data = [
+    #     {
+    #         'time': time.mktime(row.timestamp.timetuple()),
+    #         'value': row.RSI if not pd.isna(row.RSI) else 0  # Convert NaN to zero
+    #     }
+    #     for row in data.itertuples()
+    # ]
     # print(candlestick_data)
-    return candlestick_data
+    return candlestick_data,vol_data
 
 
 

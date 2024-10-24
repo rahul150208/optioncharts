@@ -29,19 +29,45 @@ const chartOptions1 = {
 const chart = LightweightCharts.createChart(document.getElementById('chart'), chartOptions1);
 const candlestickSeries = chart.addCandlestickSeries();
 
+candlestickSeries.priceScale().applyOptions({
+    scaleMargins: {
+        // positioning the price scale for the area series
+        top: 0.4,
+        bottom: 0.4,
+    },
+});
+
+const volumeSeries = chart.addHistogramSeries({
+    color: '#26a69a',
+    priceFormat: {
+        type: 'volume',
+    },
+    priceScaleId: '', // set as an overlay by setting a blank priceScaleId
+    // set the positioning of the volume series
+    scaleMargins: {
+        top: 0.7, // highest point of the series will be 70% away from the top
+        bottom: 0,
+    },
+});
+volumeSeries.priceScale().applyOptions({
+    scaleMargins: {
+        top: 0.7, // highest point of the series will be 70% away from the top
+        bottom: 0,
+    },
+});
 
 let autoUpdateInterval;
 
 // Fetch data function
 function fetchData(from_date,to_date,expiry_date,strike_price,option,timeframe,script_code) {
-    console.log('hi',from_date,to_date,expiry_date,strike_price,option,timeframe,script_code)
+    // console.log('hi',from_date,to_date,expiry_date,strike_price,option,timeframe,script_code)
     // fetch(`/api/data/${fromDate}/${toDate}/${expiryDate}/${strikePrice}/${option}/${timeframe}/${scriptCode}/${emaPeriod}/${rsiPeriod}/${interval}`)
 
     fetch(`/api/data/${from_date}/${to_date}/${expiry_date}/${strike_price}/${option}/${timeframe}/${script_code}`)
         .then(response => response.json())
         .then(data => {
             candlestickSeries.setData(data.candlestick);
-
+            volumeSeries.setData(data.volume)
             
         })
         .catch(error => {
@@ -59,7 +85,7 @@ window.addEventListener('load', () => {
 
 // Handle data fetching on button click
 document.getElementById('fetchData').addEventListener('click', () => {
-    console.log('fetching')
+    // console.log('fetching')
     const script_code = document.getElementById('symbol').value;
     const timeframe = document.getElementById('timeframe').value;
     const from_date = document.getElementById('fromdate').value;
